@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ampli by Fuzzr - Vozes com IA para o Varejo</title>
+    <meta name="description" content="Plataforma de geração de áudios com IA para o varejo.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles-new.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader">
+        <div class="loader-inner">
+            <img src="ampli_marca_final-01.png" alt="Ampli by Fuzzr" class="loader-logo">
+            <div class="loader-bar"><div class="loader-progress"></div></div>
+            <div class="loader-text">Preparando experiência...</div>
+        </div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- Dynamic Light Spots Background -->
+    <div class="light-spots" data-active-spots="1">
+        <div class="light-spot light-spot-1"></div>
+        <div class="light-spot light-spot-2"></div>
+        <div class="light-spot light-spot-3"></div>
+        <div class="light-spot light-spot-4"></div>
+        <div class="light-spot light-spot-5"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">
+                <img src="ampli_marca_final-01.png" alt="Ampli by Fuzzr">
+            </a>
+            <div class="nav-links">
+                <button class="nav-link" data-scene="0">Início</button>
+                <button class="nav-link" data-scene="1">Demo</button>
+                <button class="nav-link" data-scene="2">Recursos</button>
+                <button class="nav-link" data-scene="3">Clientes</button>
+            </div>
+            <a href="https://fuzzr.com.br" target="_blank" class="btn-header">Fuzzr →</a>
+        </nav>
+    </header>
+
+    <!-- Progress -->
+    <div class="journey-nav">
+        <div class="journey-line"><div class="journey-progress"></div></div>
+        <div class="journey-dots">
+            <button class="journey-dot active" data-scene="0"><span>01</span></button>
+            <button class="journey-dot" data-scene="1"><span>02</span></button>
+            <button class="journey-dot" data-scene="2"><span>03</span></button>
+            <button class="journey-dot" data-scene="3"><span>04</span></button>
+            <button class="journey-dot" data-scene="4"><span>05</span></button>
+        </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="scroll-indicator">
+        <span>Role para explorar</span>
+        <div class="scroll-wheel"></div>
+    </div>
+
+    <!-- 3D Container -->
+    <div id="canvas-container"></div>
+
+    <!-- 3D Journey Scenes -->
+    <div class="journey-3d">
+        
+        <!-- Scene 0: Hero -->
+        <section class="scene-3d" data-index="0">
+            <div class="scene-panel">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span>A voz que</span>
+                        <span class="gradient-text">vende mais.</span>
+                    </h1>
+                    <p class="hero-desc">
+                        Transforme sua comunicação em loja com locuções geradas por IA. 
+                        Vozes naturais, sotaque brasileiro, qualidade profissional.
+                    </p>
+                    <div class="hero-btns">
+                        <button class="btn-primary" data-scene="1">
+                            <span>Ouvir Demo</span>
+                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+                        </button>
+                        <a href="mailto:contato@ampli.audio" class="btn-secondary">Contato</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat"><strong>500+</strong><span>Lojas</span></div>
+                        <div class="stat"><strong>2M+</strong><span>Áudios</span></div>
+                        <div class="stat"><strong>98%</strong><span>Satisfação</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 1: Demo -->
+        <section class="scene-3d" data-index="1">
+            <div class="scene-panel">
+                <span class="scene-tag">Demonstração</span>
+                <h2 class="scene-title">Ouça a <span class="gradient-text">diferença</span></h2>
+                
+                <div class="demo-box">
+                    <div class="demo-script">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <p>"Atenção cliente! Aproveite nossa promoção relâmpago: todos os produtos da seção de eletrônicos com até 40% de desconto!"</p>
+                    </div>
+                    <div class="demo-compare">
+                        <div class="demo-player">
+                            <span class="player-tag">Tradicional</span>
+                            <div class="player-wave" id="wave-old"></div>
+                            <button class="player-btn"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg></button>
+                        </div>
+                        <div class="demo-vs">VS</div>
+                        <div class="demo-player featured">
+                            <span class="player-tag">Ampli by Fuzzr</span>
+                            <div class="player-wave" id="wave-new"></div>
+                            <button class="player-btn active"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 2: Features -->
+        <section class="scene-3d" data-index="2">
+            <div class="scene-panel">
+                <span class="scene-tag">Recursos</span>
+                <h2 class="scene-title">Por que escolher a <span class="gradient-text">Ampli by Fuzzr</span>?</h2>
+                
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16"/></svg>
+                        </div>
+                        <h3>Vozes Naturais</h3>
+                        <p>IA treinada com sotaque brasileiro autêntico</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        </div>
+                        <h3>Geração Instantânea</h3>
+                        <p>Áudios prontos em segundos</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
+                        </div>
+                        <h3>Qualidade de Estúdio</h3>
+                        <p>Áudio cristalino profissional</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 3: Clients - Carousel -->
+        <section class="scene-3d" data-index="3">
+            <div class="scene-panel">
+                <span class="scene-tag">Clientes</span>
+                <h2 class="scene-title">Empresas que confiam na <span class="gradient-text">Ampli by Fuzzr</span></h2>
+                
+                <div class="clients-carousel">
+                    <div class="clients-track">
+                        <a href="https://www.casasbahia.com.br" target="_blank" class="client">
+                            <img src="marcas/casas-bahia-seeklogo.png" alt="Casas Bahia">
+                        </a>
+                        <a href="https://www.hyundai.com.br" target="_blank" class="client">
+                            <img src="marcas/hyundai.png" alt="Hyundai">
+                        </a>
+                        <a href="https://www.abraoreze.com.br" target="_blank" class="client light">
+                            <img src="marcas/Abrao%20Reze.png" alt="Abrão Reze">
+                        </a>
+                        <a href="https://pullse.com.br" target="_blank" class="client light">
+                            <img src="marcas/Pullse.png" alt="Pullse">
+                        </a>
+                        <!-- duplicate sequence for seamless loop -->
+                        <a href="https://www.casasbahia.com.br" target="_blank" class="client">
+                            <img src="marcas/casas-bahia-seeklogo.png" alt="Casas Bahia">
+                        </a>
+                        <a href="https://www.hyundai.com.br" target="_blank" class="client">
+                            <img src="marcas/hyundai.png" alt="Hyundai">
+                        </a>
+                        <a href="https://www.abraoreze.com.br" target="_blank" class="client light">
+                            <img src="marcas/Abrao%20Reze.png" alt="Abrão Reze">
+                        </a>
+                        <a href="https://pullse.com.br" target="_blank" class="client light">
+                            <img src="marcas/Pullse.png" alt="Pullse">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 4: Contact -->
+        <section class="scene-3d" data-index="4">
+            <div class="scene-panel scene-final">
+                <img src="ampli_marca_final-01.png" alt="Ampli by Fuzzr" class="final-logo">
+                <h2 class="final-title">Pronto para transformar<br>sua comunicação?</h2>
+                <a href="mailto:contato@ampli.audio" class="final-email">
+                    <svg viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    contato@ampli.audio
+                </a>
+                <div class="final-footer">
+                    <span>© 2025 Ampli by Fuzzr</span>
+                    <a href="https://fuzzr.com.br" target="_blank">Desenvolvido por <strong>Fuzzr</strong></a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script-new.js"></script>
+</body>
+</html>
