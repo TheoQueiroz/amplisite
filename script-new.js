@@ -55,6 +55,8 @@ class AmpliExperience {
         this.initNavigation();
         this.init3DBackground();
         this.initWaveforms();
+        this.initRegionalizationDemo();
+        this.initBatchDemo();
         this.initClientsTunnel();
         this.positionScenes();
         this.animate();
@@ -251,6 +253,36 @@ class AmpliExperience {
         
         // Scroll hint
         document.querySelector('.scroll-indicator')?.classList.toggle('hidden', this.progress > 0.08);
+        
+        // Final scene - used para transição de logo (header -> logo central)
+        const isFinalScene = this.currentScene === this.totalScenes - 1;
+        const body = document.body;
+        const alreadyFinal = body.classList.contains('final-active');
+
+        // Entrou na cena final agora
+        if (isFinalScene && !alreadyFinal) {
+            const headerLogo = document.querySelector('.logo img');
+            const finalLogo = document.querySelector('.final-logo');
+            if (headerLogo && finalLogo) {
+                const hRect = headerLogo.getBoundingClientRect();
+                const fRect = finalLogo.getBoundingClientRect();
+
+                const hCenterX = hRect.left + hRect.width / 2;
+                const hCenterY = hRect.top + hRect.height / 2;
+                const fCenterX = fRect.left + fRect.width / 2;
+                const fCenterY = fRect.top + fRect.height / 2;
+
+                const translateX = fCenterX - hCenterX;
+                const translateY = fCenterY - hCenterY;
+                const scale = hRect.height > 0 ? (fRect.height / hRect.height) : 1.4;
+
+                document.documentElement.style.setProperty('--logo-final-translate-x', `${translateX}px`);
+                document.documentElement.style.setProperty('--logo-final-translate-y', `${translateY}px`);
+                document.documentElement.style.setProperty('--logo-final-scale', `${scale}`);
+            }
+        }
+
+        body.classList.toggle('final-active', !!isFinalScene);
     }
     
     // Cursor
@@ -264,10 +296,10 @@ class AmpliExperience {
         document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
         
         const anim = () => {
-            dx += (mx - dx) * 0.2;
-            dy += (my - dy) * 0.2;
-            rx += (mx - rx) * 0.1;
-            ry += (my - ry) * 0.1;
+            dx += (mx - dx) * 0.35;
+            dy += (my - dy) * 0.35;
+            rx += (mx - rx) * 0.18;
+            ry += (my - ry) * 0.18;
             dot.style.left = dx + 'px';
             dot.style.top = dy + 'px';
             ring.style.left = rx + 'px';
@@ -550,6 +582,214 @@ class AmpliExperience {
         } catch (e) {
             console.log('3D:', e);
         }
+    }
+    
+    initRegionalizationDemo() {
+        const demo = document.querySelector('.regional-demo');
+        if (!demo) return;
+        
+        const button = demo.querySelector('.regionalize-btn');
+        const cards = demo.querySelectorAll('.regional-card');
+        
+        if (!button || cards.length === 0) return;
+        
+        const audioByRegion = {
+            sul: document.getElementById('regional-audio-sul'),
+            sudeste: document.getElementById('regional-audio-sudeste'),
+            nordeste: document.getElementById('regional-audio-nordeste')
+        };
+        
+        let generating = false;
+        let ready = false;
+        let currentAudio = null;
+        let currentCard = null;
+        let timerTimeout = null;
+        
+        const stopCurrentAudio = () => {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            if (currentCard) {
+                currentCard.classList.remove('playing');
+            }
+            currentAudio = null;
+            currentCard = null;
+        };
+        
+        // Quando áudio termina, remover estado playing
+        Object.values(audioByRegion).forEach(audio => {
+            if (audio) {
+                audio.addEventListener('ended', () => {
+                    if (currentCard) {
+                        currentCard.classList.remove('playing');
+                    }
+                    currentAudio = null;
+                    currentCard = null;
+                });
+            }
+        });
+        
+        button.addEventListener('click', () => {
+            if (generating) return;
+            
+            generating = true;
+            ready = false;
+            demo.classList.remove('ready');
+            demo.classList.add('generating');
+            stopCurrentAudio();
+            
+            if (timerTimeout) clearTimeout(timerTimeout);
+            timerTimeout = setTimeout(() => {
+                generating = false;
+                ready = true;
+                demo.classList.remove('generating');
+                demo.classList.add('ready');
+            }, 1600);
+        });
+        
+        cards.forEach((card) => {
+            card.addEventListener('click', () => {
+                if (!ready) return;
+                
+                const region = card.getAttribute('data-region');
+                const audio = region ? audioByRegion[region] : null;
+                if (!audio) return;
+                
+                // Se já está tocando este card, atua como PAUSE/STOP
+                if (currentCard === card && card.classList.contains('playing')) {
+                    stopCurrentAudio();
+                    return;
+                }
+
+                // Trocar para outro card / iniciar reprodução
+                stopCurrentAudio();
+                
+                currentAudio = audio;
+                currentCard = card;
+                card.classList.add('playing');
+                
+                try {
+                    audio.currentTime = 0;
+                    audio.play();
+                } catch (e) {
+                    console.log('Audio play error:', e);
+                }
+            });
+        });
+    }
+    
+    // Batch generation demo - Sheet to Audio
+    initBatchDemo() {
+        const demo = document.querySelector('.batch-demo');
+        if (!demo) return;
+        
+        const button = demo.querySelector('.batch-btn');
+        const sheetRows = demo.querySelectorAll('.sheet-row[data-row]');
+        const audioCards = demo.querySelectorAll('.batch-audio[data-row]');
+        
+        if (!button || sheetRows.length === 0) return;
+        
+        const audioByRow = {
+            1: document.getElementById('batch-audio-1'),
+            2: document.getElementById('batch-audio-2'),
+            3: document.getElementById('batch-audio-3'),
+            4: document.getElementById('batch-audio-4'),
+            5: document.getElementById('batch-audio-5')
+        };
+
+        let generating = false;
+        let ready = false;
+        let currentAudio = null;
+        let currentCard = null;
+
+        const stopCurrent = () => {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            if (currentCard) {
+                currentCard.classList.remove('playing');
+            }
+            currentAudio = null;
+            currentCard = null;
+        };
+
+        Object.values(audioByRow).forEach(audio => {
+            if (audio) {
+                audio.addEventListener('ended', () => {
+                    if (currentCard) {
+                        currentCard.classList.remove('playing');
+                    }
+                    currentAudio = null;
+                    currentCard = null;
+                });
+            }
+        });
+        
+        button.addEventListener('click', () => {
+            if (generating) return;
+            
+            generating = true;
+            ready = false;
+            demo.classList.remove('ready');
+            demo.classList.add('generating');
+            
+            // Animate each row being "processed" one by one
+            let rowIndex = 0;
+            const processRow = () => {
+                if (rowIndex > 0) {
+                    sheetRows[rowIndex - 1].classList.remove('processing');
+                }
+                
+                if (rowIndex < sheetRows.length) {
+                    sheetRows[rowIndex].classList.add('processing');
+                    rowIndex++;
+                    setTimeout(processRow, 350);
+                } else {
+                    // All rows processed
+                    setTimeout(() => {
+                        generating = false;
+                        ready = true;
+                        demo.classList.remove('generating');
+                        demo.classList.add('ready');
+                    }, 200);
+                }
+            };
+            
+            setTimeout(processRow, 300);
+        });
+
+        audioCards.forEach((card) => {
+            const playButton = card.querySelector('.batch-audio-play');
+            const target = playButton || card;
+            
+            target.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!ready) return;
+                
+                const row = card.getAttribute('data-row');
+                const audio = row ? audioByRow[row] : null;
+                if (!audio) return;
+                
+                if (currentCard === card && card.classList.contains('playing')) {
+                    stopCurrent();
+                    return;
+                }
+                
+                stopCurrent();
+                currentCard = card;
+                currentAudio = audio;
+                card.classList.add('playing');
+                
+                try {
+                    audio.currentTime = 0;
+                    audio.play();
+                } catch (e) {
+                    console.log('Audio play error:', e);
+                }
+            });
+        });
     }
     
     // Client cards spotlight animation - cycles through each card

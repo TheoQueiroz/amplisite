@@ -17,7 +17,7 @@
     <!-- Loader -->
     <div class="loader">
         <div class="loader-inner">
-            <img src="ampli_marca_final-01.png" alt="Ampli by Fuzzr" class="loader-logo">
+            <img src="Logo_Ampli_Branco.png" alt="Ampli by Fuzzr" class="loader-logo">
             <div class="loader-bar"><div class="loader-progress"></div></div>
             <div class="loader-text">Preparando experiência...</div>
         </div>
@@ -40,13 +40,15 @@
     <header class="header">
         <nav class="nav-container">
             <a href="#" class="logo">
-                <img src="ampli_marca_final-01.png" alt="Ampli by Fuzzr">
+                <img src="Logo_Ampli_Branco.png" alt="Ampli by Fuzzr">
             </a>
             <div class="nav-links">
                 <button class="nav-link" data-scene="0">Início</button>
                 <button class="nav-link" data-scene="1">Demo</button>
-                <button class="nav-link" data-scene="2">Recursos</button>
-                <button class="nav-link" data-scene="3">Clientes</button>
+                <button class="nav-link" data-scene="2">Comunicação</button>
+                <button class="nav-link" data-scene="3">Lotes</button>
+                <button class="nav-link" data-scene="4">Recursos</button>
+                <button class="nav-link" data-scene="5">Clientes</button>
             </div>
             <a href="https://fuzzr.com.br" target="_blank" class="btn-header">Fuzzr →</a>
         </nav>
@@ -61,6 +63,8 @@
             <button class="journey-dot" data-scene="2"><span>03</span></button>
             <button class="journey-dot" data-scene="3"><span>04</span></button>
             <button class="journey-dot" data-scene="4"><span>05</span></button>
+            <button class="journey-dot" data-scene="5"><span>06</span></button>
+            <button class="journey-dot" data-scene="6"><span>07</span></button>
         </div>
     </div>
 
@@ -132,8 +136,215 @@
             </div>
         </section>
 
-        <!-- Scene 2: Features -->
+        <!-- Scene 2: Regionalização -->
         <section class="scene-3d" data-index="2">
+            <div class="scene-panel regional-scene">
+                <span class="scene-tag">Comunicação</span>
+                <h2 class="scene-title">Como a <span class="gradient-text">Ampli by Fuzzr</span> fala com cada região</h2>
+                
+                <div class="regional-demo">
+                    <!-- Frase original centralizada -->
+                    <div class="regional-source">
+                        <div class="regional-phrase">
+                            <svg class="regional-quote" viewBox="0 0 24 24"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 0 0 0 0 0z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 0 0 1 0 1z"/></svg>
+                            <p>Atenção cliente! Aproveite nossa promoção relâmpago: todos os produtos da seção de eletrônicos com até 40% de desconto!</p>
+                        </div>
+                    </div>
+
+                    <!-- Botão central -->
+                    <div class="regional-center">
+                        <button class="regionalize-btn">
+                            <span class="regionalize-btn-text">Regionalizar</span>
+                            <span class="regionalize-btn-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                            </span>
+                        </button>
+                        <div class="regional-timer">
+                            <div class="regional-timer-ring">
+                                <svg viewBox="0 0 36 36">
+                                    <circle class="timer-bg" cx="18" cy="18" r="16"/>
+                                    <circle class="timer-progress" cx="18" cy="18" r="16"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Linhas de conexão SVG -->
+                    <div class="regional-branches">
+                        <svg class="branch-lines" viewBox="0 0 600 80" preserveAspectRatio="none">
+                            <path class="branch-line branch-line-1" d="M300,0 Q150,40 50,80"/>
+                            <path class="branch-line branch-line-2" d="M300,0 L300,80"/>
+                            <path class="branch-line branch-line-3" d="M300,0 Q450,40 550,80"/>
+                        </svg>
+                    </div>
+
+                    <!-- 3 sotaques ramificados -->
+                    <div class="regional-results">
+                        <button class="regional-card" data-region="sul">
+                            <span class="regional-card-region">Sul</span>
+                            <span class="regional-card-phrase">"Bah, aproveita essa oferta!"</span>
+                            <span class="regional-card-play">
+                                <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                            </span>
+                        </button>
+                        <button class="regional-card" data-region="sudeste">
+                            <span class="regional-card-region">Sudeste</span>
+                            <span class="regional-card-phrase">"Olha a promoção imperdível!"</span>
+                            <span class="regional-card-play">
+                                <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                            </span>
+                        </button>
+                        <button class="regional-card" data-region="nordeste">
+                            <span class="regional-card-region">Nordeste</span>
+                            <span class="regional-card-phrase">"Ô meu povo, corre pra aproveitar!"</span>
+                            <span class="regional-card-play">
+                                <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                            </span>
+                        </button>
+                    </div>
+
+                    <p class="regional-footer">
+                        A mesma mensagem pode soar muito diferente dependendo do sotaque e do jeito de falar.
+                    </p>
+
+                    <audio id="regional-audio-sul" src="audios/regional-sul.mp3"></audio>
+                    <audio id="regional-audio-sudeste" src="audios/regional-sudeste.mp3"></audio>
+                    <audio id="regional-audio-nordeste" src="audios/regional-nordeste.mp3"></audio>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 3: Geração em Lote -->
+        <section class="scene-3d" data-index="3">
+            <div class="scene-panel batch-scene">
+                <span class="scene-tag">Escala</span>
+                <h2 class="scene-title">Da <span class="gradient-text">planilha</span> para o <span class="gradient-text">áudio</span> final em segundos</h2>
+                
+                <div class="batch-demo">
+                    <!-- Planilha -->
+                    <div class="batch-sheet">
+                        <div class="sheet-header">
+                            <svg class="sheet-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+                            <span>planilha.xlsx</span>
+                        </div>
+                        <div class="sheet-table">
+                            <div class="sheet-row sheet-row-header">
+                                <span>Cidade</span>
+                                <span>Produto</span>
+                                <span>Preço</span>
+                            </div>
+                            <div class="sheet-row" data-row="1">
+                                <span>São Paulo</span>
+                                <span>TV 55"</span>
+                                <span>R$ 1.999</span>
+                            </div>
+                            <div class="sheet-row" data-row="2">
+                                <span>Rio de Janeiro</span>
+                                <span>Geladeira</span>
+                                <span>R$ 2.499</span>
+                            </div>
+                            <div class="sheet-row" data-row="3">
+                                <span>Belo Horizonte</span>
+                                <span>Sofá</span>
+                                <span>R$ 899</span>
+                            </div>
+                            <div class="sheet-row" data-row="4">
+                                <span>Salvador</span>
+                                <span>Ar Condicionado</span>
+                                <span>R$ 1.299</span>
+                            </div>
+                            <div class="sheet-row" data-row="5">
+                                <span>Curitiba</span>
+                                <span>Máq. Lavar</span>
+                                <span>R$ 1.599</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botão central -->
+                    <div class="batch-action">
+                        <button class="batch-btn">
+                            <span class="batch-btn-text">Gerar Lote</span>
+                            <svg class="batch-btn-icon" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        </button>
+                        <div class="batch-arrow">
+                            <svg viewBox="0 0 60 24">
+                                <path d="M0,12 L50,12 M42,4 L50,12 L42,20" stroke="currentColor" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Resultados -->
+                    <div class="batch-results">
+                        <div class="batch-audio" data-row="1">
+                            <button class="batch-audio-play" type="button">
+                                <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                            </button>
+                            <span class="batch-audio-city">São Paulo</span>
+                            <div class="batch-audio-wave"></div>
+                            <span class="batch-audio-check">✓</span>
+                        </div>
+                        <div class="batch-audio" data-row="2">
+                            <button class="batch-audio-play" type="button">
+                                <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                            </button>
+                            <span class="batch-audio-city">Rio de Janeiro</span>
+                            <div class="batch-audio-wave"></div>
+                            <span class="batch-audio-check">✓</span>
+                        </div>
+                        <div class="batch-audio" data-row="3">
+                            <button class="batch-audio-play" type="button">
+                                <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                            </button>
+                            <span class="batch-audio-city">Belo Horizonte</span>
+                            <div class="batch-audio-wave"></div>
+                            <span class="batch-audio-check">✓</span>
+                        </div>
+                        <div class="batch-audio" data-row="4">
+                            <button class="batch-audio-play" type="button">
+                                <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                            </button>
+                            <span class="batch-audio-city">Salvador</span>
+                            <div class="batch-audio-wave"></div>
+                            <span class="batch-audio-check">✓</span>
+                        </div>
+                        <div class="batch-audio" data-row="5">
+                            <button class="batch-audio-play" type="button">
+                                <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                            </button>
+                            <span class="batch-audio-city">Curitiba</span>
+                            <div class="batch-audio-wave"></div>
+                            <span class="batch-audio-check">✓</span>
+                        </div>
+                        <div class="batch-counter">
+                            <span class="counter-number">5</span>
+                            <span class="counter-label">áudios em 2.8s</span>
+                        </div>
+                    </div>
+
+                    <p class="batch-footer">
+                        Perfeito para carros de som, campanhas regionais e promoções em escala.
+                    </p>
+
+                    <audio id="batch-audio-1" src="audios/batch-1.mp3"></audio>
+                    <audio id="batch-audio-2" src="audios/batch-2.mp3"></audio>
+                    <audio id="batch-audio-3" src="audios/batch-3.mp3"></audio>
+                    <audio id="batch-audio-4" src="audios/batch-4.mp3"></audio>
+                    <audio id="batch-audio-5" src="audios/batch-5.mp3"></audio>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 4: Features -->
+        <section class="scene-3d" data-index="4">
             <div class="scene-panel">
                 <span class="scene-tag">Recursos</span>
                 <h2 class="scene-title">Por que escolher a <span class="gradient-text">Ampli by Fuzzr</span>?</h2>
@@ -164,8 +375,8 @@
             </div>
         </section>
 
-        <!-- Scene 3: Clients - Carousel -->
-        <section class="scene-3d" data-index="3">
+        <!-- Scene 5: Clients - Carousel -->
+        <section class="scene-3d" data-index="5">
             <div class="scene-panel">
                 <span class="scene-tag">Clientes</span>
                 <h2 class="scene-title">Empresas que confiam na <span class="gradient-text">Ampli by Fuzzr</span></h2>
@@ -202,10 +413,10 @@
             </div>
         </section>
 
-        <!-- Scene 4: Contact -->
-        <section class="scene-3d" data-index="4">
+        <!-- Scene 6: Contact -->
+        <section class="scene-3d" data-index="6">
             <div class="scene-panel scene-final">
-                <img src="ampli_marca_final-01.png" alt="Ampli by Fuzzr" class="final-logo">
+                <img src="Logo_Ampli_Branco.png" alt="Ampli by Fuzzr" class="final-logo">
                 <h2 class="final-title">Pronto para transformar<br>sua comunicação?</h2>
                 <a href="mailto:contatoampli@fuzzr.com.br" class="final-email">
                     <svg viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="6" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
