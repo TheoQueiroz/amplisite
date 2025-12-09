@@ -551,6 +551,7 @@ body.loaded .cursor-dot, body.loaded .cursor-ring { opacity: 1; }
     border-radius: 50%;
     transition: all 0.3s ease;
     position: relative;
+    cursor: pointer;
 }
 .player-btn::before {
     content: '';
@@ -560,7 +561,22 @@ body.loaded .cursor-dot, body.loaded .cursor-ring { opacity: 1; }
     border: 2px solid transparent;
     transition: all 0.3s ease;
 }
-.player-btn svg { width: 18px; height: 18px; fill: var(--white); margin-left: 3px; }
+.player-btn svg { 
+    width: 18px; 
+    height: 18px; 
+    fill: var(--white); 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.player-btn svg.play-icon {
+    margin-left: 1px;
+}
+.player-btn svg.pause-icon {
+    width: 16px;
+    height: 16px;
+}
 .player-btn.active { 
     background: var(--primary);
     box-shadow: 0 4px 20px rgba(255,94,0,0.4);
@@ -1305,12 +1321,15 @@ body.loaded .cursor-dot, body.loaded .cursor-ring { opacity: 1; }
     justify-content: center;
     background: var(--primary);
     color: var(--white);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 700;
     border-radius: 50%;
     opacity: 0;
     transform: scale(0);
     transition: all 0.3s ease 0.3s;
+    line-height: 1;
+    position: relative;
+    left: -1px;
 }
 
 .batch-demo.ready .batch-audio-check {

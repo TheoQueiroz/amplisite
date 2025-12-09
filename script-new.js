@@ -58,8 +58,101 @@ class AmpliExperience {
         this.initRegionalizationDemo();
         this.initBatchDemo();
         this.initClientsTunnel();
+        this.initAudioPlayers();
         this.positionScenes();
         this.animate();
+    }
+    
+    // Initialize audio players for demo section
+    initAudioPlayers() {
+        const players = document.querySelectorAll('.demo-player');
+        let activePlayer = null;
+        
+        players.forEach(player => {
+            const btn = player.querySelector('.player-btn');
+            const audio = player.querySelector('audio');
+            const playIcon = player.querySelector('.play-icon');
+            const pauseIcon = player.querySelector('.pause-icon');
+            const waveContainer = player.querySelector('.player-wave');
+            
+            // Get the appropriate wave instance
+            let waveInstance = null;
+            if (waveContainer.id === 'wave-old') {
+                waveInstance = this.waveOld;
+            } else if (waveContainer.id === 'wave-new') {
+                waveInstance = this.waveNew;
+            }
+            
+            // Play/pause functionality
+            btn.addEventListener('click', () => {
+                // If this player is already active, toggle play/pause
+                if (player === activePlayer) {
+                    if (audio.paused) {
+                        audio.play();
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                        if (waveInstance) waveInstance.start();
+                    } else {
+                        audio.pause();
+                        playIcon.style.display = 'block';
+                        pauseIcon.style.display = 'none';
+                        if (waveInstance) waveInstance.stop();
+                    }
+                } else {
+                    // Pause any currently playing audio
+                    if (activePlayer) {
+                        const activeAudio = activePlayer.querySelector('audio');
+                        const activePlayIcon = activePlayer.querySelector('.play-icon');
+                        const activePauseIcon = activePlayer.querySelector('.pause-icon');
+                        const activeWaveContainer = activePlayer.querySelector('.player-wave');
+                        let activeWaveInstance = null;
+                        
+                        if (activeWaveContainer.id === 'wave-old') {
+                            activeWaveInstance = this.waveOld;
+                        } else if (activeWaveContainer.id === 'wave-new') {
+                            activeWaveInstance = this.waveNew;
+                        }
+                        
+                        activeAudio.pause();
+                        activeAudio.currentTime = 0;
+                        activePlayIcon.style.display = 'block';
+                        activePauseIcon.style.display = 'none';
+                        activePlayer.classList.remove('playing');
+                        if (activeWaveInstance) activeWaveInstance.stop();
+                    }
+                    
+                    // Play the clicked audio
+                    audio.currentTime = 0;
+                    audio.play();
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                    player.classList.add('playing');
+                    if (waveInstance) waveInstance.start();
+                    activePlayer = player;
+                }
+            });
+            
+            // Update UI when audio ends
+            audio.addEventListener('ended', () => {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                player.classList.remove('playing');
+                if (waveInstance) waveInstance.stop();
+                activePlayer = null;
+            });
+            
+            // Pause all audio when switching scenes
+            document.addEventListener('sceneChange', () => {
+                if (audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                    player.classList.remove('playing');
+                    if (waveInstance) waveInstance.stop();
+                }
+            });
+        });
     }
     
     // Position scenes along Z axis (tunnel)
@@ -81,12 +174,12 @@ class AmpliExperience {
             this.isSnapped = false;
             clearTimeout(this.snapTimer);
             
-            const delta = e.deltaY * 0.001;
+            const delta = e.deltaY * 0.0004; // Reduzido de 0.001 para 0.0004 (60% mais lento)
             this.targetProgress += delta;
             this.targetProgress = Math.max(0, Math.min(1, this.targetProgress));
             
-            // Auto-snap after scroll stops
-            this.snapTimer = setTimeout(() => this.snapToScene(), 150);
+            // Auto-snap after scroll stops - aumentado para dar mais tempo
+            this.snapTimer = setTimeout(() => this.snapToScene(), 250); // Aumentado de 150ms para 250ms
             
         }, { passive: false });
         
@@ -101,14 +194,14 @@ class AmpliExperience {
         
         window.addEventListener('touchmove', (e) => {
             const y = e.touches[0].clientY;
-            const delta = (lastY - y) * 0.004;
+            const delta = (lastY - y) * 0.002; // Reduzido de 0.004 para 0.002 (50% mais lento)
             this.targetProgress += delta;
             this.targetProgress = Math.max(0, Math.min(1, this.targetProgress));
             lastY = y;
         }, { passive: true });
         
         window.addEventListener('touchend', () => {
-            this.snapTimer = setTimeout(() => this.snapToScene(), 100);
+            this.snapTimer = setTimeout(() => this.snapToScene(), 200); // Aumentado de 100ms para 200ms
         });
         
         // Keyboard - direct scene navigation
@@ -167,6 +260,8 @@ class AmpliExperience {
         // Scene changed - trigger entrance animation
         if (prevScene !== this.currentScene) {
             this.animateSceneEntrance(this.currentScene);
+            // Dispatch scene change event to stop audio
+            document.dispatchEvent(new CustomEvent('sceneChange'));
         }
         
         // Update each scene position relative to camera
@@ -691,11 +786,11 @@ class AmpliExperience {
         if (!button || sheetRows.length === 0) return;
         
         const audioByRow = {
-            1: document.getElementById('batch-audio-1'),
-            2: document.getElementById('batch-audio-2'),
-            3: document.getElementById('batch-audio-3'),
-            4: document.getElementById('batch-audio-4'),
-            5: document.getElementById('batch-audio-5')
+            1: document.querySelector('.batch-audio[data-row="1"] audio'),
+            2: document.querySelector('.batch-audio[data-row="2"] audio'),
+            3: document.querySelector('.batch-audio[data-row="3"] audio'),
+            4: document.querySelector('.batch-audio[data-row="4"] audio'),
+            5: document.querySelector('.batch-audio[data-row="5"] audio')
         };
 
         let generating = false;
@@ -790,6 +885,11 @@ class AmpliExperience {
                 }
             });
         });
+        
+        // Stop audio when scene changes
+        document.addEventListener('sceneChange', () => {
+            stopCurrent();
+        });
     }
     
     // Client cards spotlight animation - cycles through each card
@@ -820,8 +920,8 @@ class AmpliExperience {
     initWaveforms() {
         const oldWave = document.getElementById('wave-old');
         const newWave = document.getElementById('wave-new');
-        if (oldWave) this.createWave(oldWave, false);
-        if (newWave) this.createWave(newWave, true);
+        if (oldWave) this.waveOld = this.createWave(oldWave, false);
+        if (newWave) this.waveNew = this.createWave(newWave, true);
     }
     
     createWave(container, isFeatured) {
@@ -831,6 +931,10 @@ class AmpliExperience {
         container.appendChild(canvas);
         const ctx = canvas.getContext('2d');
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        
+        let isAnimating = false;
+        let animationId = null;
+        let intervalId = null;
         
         const resize = () => {
             const rect = container.getBoundingClientRect();
@@ -851,16 +955,21 @@ class AmpliExperience {
         
         const updateBars = () => {
             bars.forEach((bar, i) => {
-                if (isFeatured) {
-                    // More dynamic movement for Ampli by Fuzzr
-                    if (Math.random() < 0.1) {
-                        bar.target = 0.2 + Math.random() * 0.8;
+                if (isAnimating) {
+                    if (isFeatured) {
+                        // More dynamic movement for Ampli by Fuzzr
+                        if (Math.random() < 0.15) {
+                            bar.target = 0.3 + Math.random() * 0.7;
+                        }
+                    } else {
+                        // Discrete, lower levels for traditional
+                        if (Math.random() < 0.1) {
+                            bar.target = 0.2 + Math.random() * 0.5;
+                        }
                     }
                 } else {
-                    // Discrete, lower levels for traditional
-                    if (Math.random() < 0.05) {
-                        bar.target = 0.1 + Math.random() * 0.4;
-                    }
+                    // Return to idle state when not playing
+                    bar.target = 0.2;
                 }
                 
                 bar.level += (bar.target - bar.level) * bar.speed;
@@ -898,19 +1007,38 @@ class AmpliExperience {
                 
                 const radius = Math.min(6, barWidth / 2);
                 ctx.beginPath();
-                ctx.roundRect(x, y, barWidth, height, radius);
+                ctx.roundRect(x, y, barWidth, height, [radius, radius, 0, 0]);
                 ctx.fill();
             });
             
-            if (isFeatured) {
-                requestAnimationFrame(draw);
+            if (isAnimating) {
+                animationId = requestAnimationFrame(draw);
             }
         };
         
+        // Start with idle state
         draw();
         if (!isFeatured) {
-            setInterval(draw, 140);
+            intervalId = setInterval(draw, 140);
         }
+        
+        return {
+            start: () => {
+                isAnimating = true;
+                if (!animationId) {
+                    draw();
+                }
+            },
+            stop: () => {
+                isAnimating = false;
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+                // Draw one more time to show idle state
+                draw();
+            }
+        };
     }
 }
 
