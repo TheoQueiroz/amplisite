@@ -772,6 +772,11 @@ class AmpliExperience {
                 }
             });
         });
+        
+        // Stop audio when scene changes
+        document.addEventListener('sceneChange', () => {
+            stopCurrentAudio();
+        });
     }
     
     // Batch generation demo - Sheet to Audio
