@@ -84,7 +84,7 @@ class AmpliExperience {
             }
             
             // Play/pause functionality
-            btn.addEventListener('click', () => {
+            const handlePlayPause = () => {
                 // If this player is already active, toggle play/pause
                 if (player === activePlayer) {
                     if (audio.paused) {
@@ -130,7 +130,25 @@ class AmpliExperience {
                     if (waveInstance) waveInstance.start();
                     activePlayer = player;
                 }
-            });
+            };
+            
+            // Add click event for desktop
+            btn.addEventListener('click', handlePlayPause);
+            
+            // Add touch events for mobile
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent double-firing on mobile
+                handlePlayPause();
+            }, { passive: false });
+            
+            // Add touch to the entire player card for better mobile UX
+            player.addEventListener('touchstart', (e) => {
+                // Only handle if not clicking the button directly
+                if (e.target !== btn && !btn.contains(e.target)) {
+                    e.preventDefault();
+                    handlePlayPause();
+                }
+            }, { passive: false });
             
             // Update UI when audio ends
             audio.addEventListener('ended', () => {
@@ -331,6 +349,31 @@ class AmpliExperience {
         // Progress
         const bar = document.querySelector('.journey-progress');
         if (bar) bar.style.height = (this.progress * 100) + '%';
+        
+        // Update body data attribute for mobile header behavior
+        document.body.setAttribute('data-current-scene', this.currentScene.toString());
+        
+        // Animate header based on scene transition for mobile
+        const header = document.querySelector('.header');
+        if (header && window.innerWidth <= 768) {
+            // Calculate smooth transition based on progress
+            const normalizedProgress = this.progress * (this.totalScenes - 1);
+            const currentSceneFloat = normalizedProgress;
+            
+            if (currentSceneFloat <= 0.2) {
+                // Hero scene area - header visible
+                const visibility = Math.max(0, 1 - (currentSceneFloat * 5));
+                header.style.opacity = visibility.toString();
+                const slideUp = Math.max(0, currentSceneFloat * 100);
+                header.style.transform = `translateY(${-slideUp}%)`;
+                header.style.pointerEvents = visibility > 0.5 ? 'auto' : 'none';
+            } else {
+                // Other scenes - header hidden
+                header.style.opacity = '0';
+                header.style.transform = 'translateY(-100%)';
+                header.style.pointerEvents = 'none';
+            }
+        }
         
         // Dots
         document.querySelectorAll('.journey-dot').forEach((dot, i) => {
@@ -725,7 +768,7 @@ class AmpliExperience {
             }
         });
         
-        button.addEventListener('click', () => {
+        const handleRegionalize = () => {
             if (generating) return;
             
             generating = true;
@@ -741,10 +784,19 @@ class AmpliExperience {
                 demo.classList.remove('generating');
                 demo.classList.add('ready');
             }, 1600);
-        });
+        };
+        
+        // Add click event for desktop
+        button.addEventListener('click', handleRegionalize);
+        
+        // Add touch events for mobile
+        button.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent double-firing on mobile
+            handleRegionalize();
+        }, { passive: false });
         
         cards.forEach((card) => {
-            card.addEventListener('click', () => {
+            const handleCardClick = () => {
                 if (!ready) return;
                 
                 const region = card.getAttribute('data-region');
@@ -770,7 +822,16 @@ class AmpliExperience {
                 } catch (e) {
                     console.log('Audio play error:', e);
                 }
-            });
+            };
+            
+            // Add click event for desktop
+            card.addEventListener('click', handleCardClick);
+            
+            // Add touch events for mobile
+            card.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent double-firing on mobile
+                handleCardClick();
+            }, { passive: false });
         });
         
         // Stop audio when scene changes
@@ -827,7 +888,7 @@ class AmpliExperience {
             }
         });
         
-        button.addEventListener('click', () => {
+        const handleBatchGenerate = () => {
             if (generating) return;
             
             generating = true;
@@ -858,7 +919,41 @@ class AmpliExperience {
             };
             
             setTimeout(processRow, 300);
-        });
+        };
+        
+        // Add click event for desktop
+        button.addEventListener('click', handleBatchGenerate);
+        
+        // Add touch events for mobile
+        button.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent double-firing on mobile
+            handleBatchGenerate();
+        }, { passive: false });
+        
+        // Add toggle functionality for sheet on mobile
+        if (window.innerWidth <= 768) {
+            const sheet = demo.querySelector('.batch-sheet');
+            if (sheet) {
+                const toggleSheet = () => {
+                    if (demo.classList.contains('ready')) {
+                        sheet.classList.toggle('expanded');
+                        if (sheet.classList.contains('expanded')) {
+                            sheet.style.maxHeight = '400px';
+                        } else {
+                            sheet.style.maxHeight = '60px';
+                        }
+                    }
+                };
+                
+                sheet.addEventListener('click', toggleSheet);
+                sheet.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    toggleSheet();
+                }, { passive: false });
+                
+                sheet.style.cursor = 'pointer';
+            }
+        }
 
         audioCards.forEach((card) => {
             const playButton = card.querySelector('.batch-audio-play');
